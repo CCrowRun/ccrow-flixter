@@ -65,6 +65,9 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  # Devise Gem URL
+  config.action_mailer.default_url_options = { host: 'flixter-carrie-crow.herokuapp.com' }
+
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
