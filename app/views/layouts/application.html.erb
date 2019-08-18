@@ -19,6 +19,11 @@
 
         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <%= link_to 'Courses', courses_path, class: 'nav-link' %>
+            </li>
+          </ul>
+          <ul class="navbar-nav">
             <% if user_signed_in? %>
               <li class="nav-item active">
                 <%= link_to 'Profile', user_path(current_user), class: 'nav-link'%>
