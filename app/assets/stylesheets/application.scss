@@ -87,11 +87,15 @@ h1, h2, h3, h4, h5, h6, .navbar {
   border: 1px solid #ccc;
   border-color: #e4e4e4 #bebebd #bebebd #e4e4e4;
   padding: 10px;
-  margin: 10px;
 }
 
 .booyah-box h2, .booyah-box h1 {
   margin: 10px;
+}
+
+.home {
+  margin: 25px;
+  padding: 25px;
 }
 
 .help-block {
@@ -100,6 +104,14 @@ h1, h2, h3, h4, h5, h6, .navbar {
   border-radius: 3px;
   padding: 2px 8px 2px 8px;
   margin: 10px;
+}
+
+.img-upload > img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .lesson {

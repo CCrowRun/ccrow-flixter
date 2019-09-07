@@ -7,7 +7,9 @@
     <h2 class="text-center">
       <%= link_to course.title, course_path(course) %>
       <% if course.image.url.present? %>
-        <%= image_tag course.image.url, class: 'img-fluid' %>
+        <div class="img-upload">
+          <%= image_tag course.image.url %>
+        </div>
       <% end %>
     </h2>
     <br />
