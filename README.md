@@ -27,7 +27,12 @@ As an authenticated instructor user, I want to:
   * Edit courses, sections, or lessons as needed
 
 ## High Level Specs
-Flixter is a Ruby on Rails application, with a database is managed by Postgres
+Flixter is a two-sided marketplace, allowing users to fill two roles: student, and instructor. Students can pay to view a course by creating an enrollment, which ties that student to the course. This provides access to all the connected sections and lessons. Instructors can create content for courses, sections, or lessons, and modify it later. The two roles are not mutually exclusive, and the user's role depends on whether they created a course, and/or whether they have an active enrollment.
+
+Courses are comprised of sections, which contain lessons. Each course has many sections, each section has many lessons, and they are all traceable back to one section or course. Each of these models can only be updated by the instructor who created it, though they can be viewed by a student with an active enrollment.
+
+### Application Specs
+Flixter is a Ruby on Rails application, with a database is managed by PostgreSQL
 * Rails v. 5.2.3
 * Ruby v. 2.5.3
 
