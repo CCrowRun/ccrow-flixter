@@ -12,10 +12,14 @@ RSpec.describe Course, type: :model do
         course = Course.new(description: "Test", cost: 50, user_id: user.id)
         expect(course).to_not be_valid
       end
-      it "should not save a course without a description"
-
-      it "should not save a course without a cost"
-
+      it "should not save a course without a description" do
+        course = Course.new(title: "Test", cost: 50, user_id: user.id)
+        expect(course).to_not be_valid
+      end
+      it "should not save a course without a cost" do
+        course = Course.new(title: "Test", description: "Test", user_id: user.id)
+        expect(course).to_not be_valid
+      end
     end
   end
 
