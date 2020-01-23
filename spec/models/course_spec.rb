@@ -13,5 +13,12 @@ RSpec.describe Course, type: :model do
     end
   end
 
-  describe "it determines if a course is premium"
+  describe "it determines if a course is premium" do
+    it "returns true if a course is not free" do
+      expect(premium_course.premium?).to eq true
+    end
+    it "returns false if a course is free" do
+      expect(free_course.premium?).to eq false
+    end
+  end
 end
