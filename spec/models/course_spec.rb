@@ -2,18 +2,23 @@ require 'rails_helper'
 
 RSpec.describe Course, type: :model do
   context "creating a new course" do
+    let(:user) { FactoryBot.create(:user) }
     describe "course validation rules" do
-      it "should save a course with title, description, and cost"
-
-      it "should not save a course without a title"
-
+      it "should save a course with title, description, and cost" do
+        course = Course.new(title: "Test", description: "Test", cost: 50, user_id: user.id)
+        expect(course).to be_valid
+      end
+      it "should not save a course without a title" do
+        course = Course.new(description: "Test", cost: 50, user_id: user.id)
+        expect(course).to_not be_valid
+      end
       it "should not save a course without a description"
 
       it "should not save a course without a cost"
 
     end
   end
-  
+
   context "checking an existing course" do
     let(:free_course) { Course.new(cost: 0) }
     let(:premium_course) { Course.new(cost: 99) }
