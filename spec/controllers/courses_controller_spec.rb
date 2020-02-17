@@ -2,7 +2,11 @@ require 'rails_helper'
 
 RSpec.describe CoursesController, type: :controller do
   describe "courses#index" do
-    it "should load the page"
+    it "should load the page" do
+      get :index
+
+      expect(response).to have_http_status(:success)
+    end
 
     it "should load all courses on the index page"
   end
