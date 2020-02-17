@@ -10,5 +10,4 @@ class StaticPagesController < ApplicationController
 
   def careers
   end
-
 end

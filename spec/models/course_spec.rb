@@ -26,7 +26,6 @@ RSpec.describe Course, type: :model do
   context "checking an existing course" do
     let(:free_course) { Course.new(cost: 0) }
     let(:premium_course) { Course.new(cost: 99) }
-
     describe "course#free?" do
       it "returns true if a course has a cost value of zero" do
         expect(free_course.free?).to eq true
@@ -35,7 +34,6 @@ RSpec.describe Course, type: :model do
         expect(premium_course.free?).to eq false
       end
     end
-
     describe "it determines if a course is premium" do
       it "returns true if a course is not free" do
         expect(premium_course.premium?).to eq true
