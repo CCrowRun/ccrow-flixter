@@ -19,6 +19,10 @@ RSpec.describe CoursesController, type: :controller do
       expect(response).to have_http_status(:success)
     end
 
-    it "should present an error with an invalid id"
+    it "should present an error with an invalid id" do
+      get :show, params: { id: "TACO" }
+
+      expect(response).to have_http_status(:not_found)
+    end
   end
 end
