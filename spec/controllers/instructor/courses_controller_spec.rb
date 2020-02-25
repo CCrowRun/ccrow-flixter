@@ -26,7 +26,11 @@ RSpec.describe Instructor::CoursesController, type: :controller do
         expect(course.description).to eq "Controller test"
         expect(course.cost).to eq 0
       end
-      it "should render unprocessable_entity for invalid courses"
+      it "should render unprocessable_entity for invalid courses" do
+        post :create, params: { course: { title: "Invalid Test Title" } }
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(Course.last).to eq nil
+      end
     end
     describe "courses#show" do
       it "should load the page for a valid id"
