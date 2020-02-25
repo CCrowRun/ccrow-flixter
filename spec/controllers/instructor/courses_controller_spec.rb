@@ -35,8 +35,10 @@ RSpec.describe Instructor::CoursesController, type: :controller do
         get :show, params: { id: @test_course.id }
         expect(response).to have_http_status(:success)
       end
-      it "should not load a page with an invalid id"
-
+      it "should not load a page with an invalid id" do
+        get :show, params: { id: "CATS" }
+        expect(response).to have_http_status(:not_found)
+      end
     end
   end
   context "instructor logged in" do
