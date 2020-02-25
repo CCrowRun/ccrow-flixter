@@ -41,16 +41,34 @@ RSpec.describe Instructor::CoursesController, type: :controller do
       end
     end
   end
-  context "instructor logged in" do
-    let(:user){ FactoryBot.create(:user) }
+  context "instructor not logged in" do
+    before :each do
+      other_user = FactoryBot.create(:user)
+      @course = FactoryBot.create(:course, user_id: other_user.id)
+    end
     describe "courses#new" do
-      it "present an error if the user is not logged in" 
+      it "should redirect unauthenticated users to sign in" do
+        get :new  
+        expect(response).to redirect_to new_user_session_path
+      end
     end
     describe "courses#create" do
-      it "present an error if the user is not logged in" 
+      it "should redirect unauthenticated users to sign in" do
+        get :create  
+        expect(response).to redirect_to new_user_session_path
+      end
     end
     describe "courses#show" do
-      it "present an error if the user is not logged in" 
+      it "should redirect unauthenticated users to sign in" do
+        get :show, params: { id: @course.id }  
+        expect(response).to redirect_to new_user_session_path
+      end
+      it "should present an error if the incorrect user is logged in" do
+        user = FactoryBot.create(:user)
+        sign_in user
+        get :show, params: {id: @course.id}
+        expect(response).to have_http_status(:unauthorized)
+      end
     end
   end
 end
