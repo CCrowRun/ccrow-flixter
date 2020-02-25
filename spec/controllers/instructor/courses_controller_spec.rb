@@ -12,7 +12,10 @@ RSpec.describe Instructor::CoursesController, type: :controller do
         get :new
         expect(response).to have_http_status(:success)
       end
-      it "should generate a new course in the database"
+      it "should generate a new course in the database" do
+        get :new
+        expect(Course.last).to eq @course
+      end
     end
     describe "courses#create" do
       it "should load the course creation page"
