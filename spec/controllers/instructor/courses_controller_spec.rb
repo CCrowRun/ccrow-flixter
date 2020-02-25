@@ -6,15 +6,12 @@ RSpec.describe Instructor::CoursesController, type: :controller do
     before :each do
       user = FactoryBot.create(:user)
       sign_in user
+      @test_course = FactoryBot.create(:course, user_id: user.id)
     end
     describe "courses#new" do
       it "should load the page" do
         get :new
         expect(response).to have_http_status(:success)
-      end
-      it "should generate a new course in the database" do
-        get :new
-        expect(Course.last).to eq @course
       end
     end
     describe "courses#create" do
@@ -29,12 +26,15 @@ RSpec.describe Instructor::CoursesController, type: :controller do
       it "should render unprocessable_entity for invalid courses" do
         post :create, params: { course: { title: "Invalid Test Title" } }
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(Course.last).to eq nil
+        course = Course.last
+        expect(course.title).not_to eq "Invalid Test Title"
       end
     end
     describe "courses#show" do
-      it "should load the page for a valid id"
-
+      it "should load the page for a valid id" do
+        get :show, params: { id: @test_course.id }
+        expect(response).to have_http_status(:success)
+      end
       it "should not load a page with an invalid id"
 
     end
