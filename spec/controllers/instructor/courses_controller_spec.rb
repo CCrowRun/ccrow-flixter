@@ -18,10 +18,14 @@ RSpec.describe Instructor::CoursesController, type: :controller do
       end
     end
     describe "courses#create" do
-      it "should load the course creation page"
-
-      it "should save valid courses to the database"
-
+      it "should create courses with valid parameters" do
+        post :create, params: { course: { title: "Test Title", description: "Controller test", cost: 0 } }
+        course = Course.last
+        expect(response).to redirect_to instructor_course_path(course)
+        expect(course.title).to eq "Test Title"
+        expect(course.description).to eq "Controller test"
+        expect(course.cost).to eq 0
+      end
       it "should render unprocessable_entity for invalid courses"
     end
     describe "courses#show" do
