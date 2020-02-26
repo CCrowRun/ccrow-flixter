@@ -33,7 +33,18 @@ RSpec.describe Instructor::SectionsController, type: :controller do
       end
     end
     describe "sections#update" do
-      it "should update attributes to reflect new params" 
+      it "should update attributes to reflect new params" do
+        section = FactoryBot.create(:section, course_id: @test_course.id)
+        patch :update, params: {
+          id: section.id,
+          section: {
+            title: "New Title"
+          }
+        }
+        expect(response).to have_http_status(:success)
+        section.reload
+        expect(section.title).to eq "New Title"
+      end
     end
   end
   context "instructor not logged in" do
