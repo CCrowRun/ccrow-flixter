@@ -10,7 +10,18 @@ RSpec.describe Instructor::SectionsController, type: :controller do
       @test_course = FactoryBot.create(:course, user_id: user.id)
     end
     describe "sections#create" do
-      it "should create section under course with valid parameters"
+      it "should create section under course with valid parameters" do
+        post :create, params: {
+          course_id: @test_course.id,
+          section: { 
+            title: "Test Section",
+            course_id: @test_course.id 
+          }
+        }
+        expect(response).to redirect_to instructor_course_path(@test_course)
+        section = Section.last
+        expect(section.title).to eq "Test Section"
+      end
       it "should not create a section with invalid paramaters"
     end
     describe "sections#update" do
