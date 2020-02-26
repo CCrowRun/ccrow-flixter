@@ -53,8 +53,28 @@ RSpec.describe Instructor::SectionsController, type: :controller do
       @course = FactoryBot.create(:course, user_id: other_user.id)
     end
     describe "sections#create" do
-      it "should redirect unauthenticated users to sign in" 
-      it "should present unauthorized if the user did not create the course"
+      it "should redirect unauthenticated users to sign in" do
+        post :create, params: {
+          course_id: @course.id,
+          section: { 
+            title: "Test Section",
+            course_id: @course.id 
+          }
+        }
+        expect(response).to redirect_to new_user_session_path
+      end
+      it "should present unauthorized if the user did not create the course" do
+        user = FactoryBot.create(:user)
+        sign_in user
+        post :create, params: {
+          course_id: @course.id,
+          section: { 
+            title: "Test Section",
+            course_id: @course.id 
+          }
+        }
+        expect(response).to have_http_status(:unauthorized)
+      end
     end
     describe "sections#update" do
       it "should redirect unauthenticated users to sign in" 
