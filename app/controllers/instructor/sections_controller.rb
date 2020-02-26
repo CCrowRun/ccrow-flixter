@@ -5,7 +5,11 @@ class Instructor::SectionsController < ApplicationController
 
   def create
     @section = current_course.sections.create(section_params)
-    redirect_to instructor_course_path(current_course)
+    if @section.valid?
+      redirect_to instructor_course_path(current_course)
+    else
+      render plain: "Invalid parameters", status: :unprocessable_entity
+    end
   end
 
   def update

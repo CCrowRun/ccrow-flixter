@@ -22,7 +22,15 @@ RSpec.describe Instructor::SectionsController, type: :controller do
         section = Section.last
         expect(section.title).to eq "Test Section"
       end
-      it "should not create a section with invalid paramaters"
+      it "should not create a section with invalid paramaters" do
+        post :create, params: {
+          course_id: @test_course.id,
+          section: { 
+            course_id: @test_course.id 
+          }
+        }
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
     end
     describe "sections#update" do
       it "should update attributes to reflect new params" 
