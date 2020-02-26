@@ -18,10 +18,26 @@ RSpec.describe Instructor::LessonsController, type: :controller do
         }
         expect(response).to redirect_to instructor_course_path(course)
       end
-      it "should not create a lesson with invalid paramaters"
+      it "should not create a lesson with invalid paramaters" do
+        post :create, params: {
+          section_id: section.id,
+          lesson: {
+            title: "Incomplete Lesson"
+          }
+        }
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
     end
     describe "lessons#update" do
-      it "should update attributes to reflect new params" 
+      it "should update attributes to reflect new params" do
+        patch :update, params: {
+          id: lesson.id,
+          lesson: {
+            subtitle: "New subtitle"
+          }
+        }
+        expect(response).to have_http_status(:success)
+      end
     end
   end
   context "user is not logged in" do
