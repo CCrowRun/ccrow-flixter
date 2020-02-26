@@ -3,30 +3,28 @@ require 'instructor/sections_controller.rb'
 
 RSpec.describe Instructor::SectionsController, type: :controller do
   include_examples "curriculum"
-  context "instructor logged in" do
+  context "authorized instructor is logged in" do
     before :each do
-      user = FactoryBot.create(:user)
       sign_in user
-      @test_course = FactoryBot.create(:course, user_id: user.id)
     end
     describe "sections#create" do
       it "should create section under course with valid parameters" do
         post :create, params: {
-          course_id: @test_course.id,
+          course_id: course.id,
           section: { 
-            title: "Test Section",
-            course_id: @test_course.id 
+            title: "New Section",
+            course_id: course.id 
           }
         }
-        expect(response).to redirect_to instructor_course_path(@test_course)
-        section = Section.last
-        expect(section.title).to eq "Test Section"
+        expect(response).to redirect_to instructor_course_path(course)
+        new_section = Section.last
+        expect(new_section.title).to eq "New Section"
       end
       it "should not create a section with invalid paramaters" do
         post :create, params: {
-          course_id: @test_course.id,
+          course_id: course.id,
           section: { 
-            course_id: @test_course.id 
+            course_id: course.id 
           }
         }
         expect(response).to have_http_status(:unprocessable_entity)
@@ -34,7 +32,6 @@ RSpec.describe Instructor::SectionsController, type: :controller do
     end
     describe "sections#update" do
       it "should update attributes to reflect new params" do
-        section = FactoryBot.create(:section, course_id: @test_course.id)
         patch :update, params: {
           id: section.id,
           section: {
@@ -47,38 +44,59 @@ RSpec.describe Instructor::SectionsController, type: :controller do
       end
     end
   end
-  context "instructor not logged in" do
-    before :each do
-      other_user = FactoryBot.create(:user)
-      @course = FactoryBot.create(:course, user_id: other_user.id)
-    end
+  context "user is not logged in" do
     describe "sections#create" do
       it "should redirect unauthenticated users to sign in" do
         post :create, params: {
-          course_id: @course.id,
+          course_id: course.id,
           section: { 
-            title: "Test Section",
-            course_id: @course.id 
+            title: "Unauthenticated Section",
+            course_id: course.id 
           }
         }
         expect(response).to redirect_to new_user_session_path
       end
+    end
+    describe "sections#update" do
+      it "should redirect unauthenticated users to sign in" do
+        patch :update, params: {
+          id: section.id,
+          section: {
+            title: "Unauthenticated"
+          }
+        }
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
+  context "unauthorized instructor is logged in" do
+    before :each do
+      @other_user = FactoryBot.create(:user)
+    end
+    describe "sections#create" do
       it "should present unauthorized if the user did not create the course" do
-        user = FactoryBot.create(:user)
-        sign_in user
+        sign_in @other_user
         post :create, params: {
-          course_id: @course.id,
+          course_id: course.id,
           section: { 
-            title: "Test Section",
-            course_id: @course.id 
+            title: "Unauthorized",
+            course_id: course.id 
           }
         }
         expect(response).to have_http_status(:unauthorized)
       end
     end
     describe "sections#update" do
-      it "should redirect unauthenticated users to sign in" 
-      it "should present unauthorized if the user did not create the section"
+      it "should present unauthorized if the user did not create the section" do
+        sign_in @other_user
+        patch :update, params: {
+          id: section.id,
+          section: {
+            title: "Unauthenticated"
+          }
+        }
+        expect(response).to have_http_status(:unauthorized)
+      end
     end
   end
 end
