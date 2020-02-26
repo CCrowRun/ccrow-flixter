@@ -42,25 +42,27 @@ RSpec.describe Instructor::LessonsController, type: :controller do
   end
   context "user is not logged in" do
     describe "lessons#create" do
-      it "should redirect unauthenticated users to sign in"
-        # post :create, params: {
-        #   course_id: course.id,
-        #   section: { 
-        #     title: "Unauthenticated Section",
-        #     course_id: course.id 
-        #   }
-        # }
-        # expect(response).to redirect_to new_user_session_path
+      it "should redirect unauthenticated users to sign in" do
+        post :create, params: {
+          section_id: section.id,
+          lesson: {
+            title: "Unauthenticated Lesson",
+            subtitle: "Test create action"
+          }
+        }
+        expect(response).to redirect_to new_user_session_path
+      end
     end
     describe "lessons#update" do
-      it "should redirect unauthenticated users to sign in"
-        # patch :update, params: {
-        #   id: section.id,
-        #   section: {
-        #     title: "Unauthenticated"
-        #   }
-        # }
-        # expect(response).to redirect_to new_user_session_path
+      it "should redirect unauthenticated users to sign in" do
+        patch :update, params: {
+          id: lesson.id,
+          lesson: {
+            subtitle: "Unauthenticated"
+          }
+        }
+        expect(response).to redirect_to new_user_session_path
+      end
     end
   end
   context "unauthorized instructor is logged in" do
