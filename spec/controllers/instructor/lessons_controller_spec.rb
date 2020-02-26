@@ -70,27 +70,29 @@ RSpec.describe Instructor::LessonsController, type: :controller do
       @other_user = FactoryBot.create(:user)
     end
     describe "lessons#create" do
-      it "should present unauthorized if the user did not create the course"
-        # sign_in @other_user
-        # post :create, params: {
-        #   course_id: course.id,
-        #   section: { 
-        #     title: "Unauthorized",
-        #     course_id: course.id 
-        #   }
-        # }
-        # expect(response).to have_http_status(:unauthorized)
+      it "should present unauthorized if the user did not create the course" do
+        sign_in @other_user
+        post :create, params: {
+          section_id: section.id,
+          lesson: {
+            title: "Unauthorized Lesson",
+            subtitle: "Test create action"
+          }
+        }
+        expect(response).to have_http_status(:unauthorized)
+      end
     end
     describe "lessons#update" do
-      it "should present unauthorized if the user did not create the section"
-        # sign_in @other_user
-        # patch :update, params: {
-        #   id: section.id,
-        #   section: {
-        #     title: "Unauthenticated"
-        #   }
-        # }
-        # expect(response).to have_http_status(:unauthorized)
+      it "should present unauthorized if the user did not create the section" do
+        sign_in @other_user
+        patch :update, params: {
+          id: lesson.id,
+          lesson: {
+            subtitle: "Unauthorized"
+          }
+        }
+        expect(response).to have_http_status(:unauthorized)
+      end
     end
   end
 end
