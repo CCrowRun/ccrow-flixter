@@ -55,6 +55,8 @@ RSpec.describe Instructor::SectionsController, type: :controller do
           }
         }
         expect(response).to redirect_to new_user_session_path
+        new_section = Section.last
+        expect(new_section.title).not_to eq "Unauthenticed Section"
       end
     end
     describe "sections#update" do
@@ -66,6 +68,8 @@ RSpec.describe Instructor::SectionsController, type: :controller do
           }
         }
         expect(response).to redirect_to new_user_session_path
+        section.reload
+        expect(section.title).not_to eq "Unauthenticated"
       end
     end
   end
@@ -84,6 +88,8 @@ RSpec.describe Instructor::SectionsController, type: :controller do
           }
         }
         expect(response).to have_http_status(:unauthorized)
+        new_section = Section.last
+        expect(new_section.title).not_to eq "Unauthorized"
       end
     end
     describe "sections#update" do
@@ -96,6 +102,8 @@ RSpec.describe Instructor::SectionsController, type: :controller do
           }
         }
         expect(response).to have_http_status(:unauthorized)
+        section.reload
+        expect(section.title).not_to eq "Unauthenticated"
       end
     end
   end

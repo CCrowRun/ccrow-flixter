@@ -17,6 +17,9 @@ RSpec.describe Instructor::LessonsController, type: :controller do
           }
         }
         expect(response).to redirect_to instructor_course_path(course)
+        new_lesson = Lesson.last
+        expect(new_lesson.section_id).to eq section.id
+        expect(new_lesson.title).to eq "New Lesson"
       end
       it "should not create a lesson with invalid paramaters" do
         post :create, params: {
@@ -26,6 +29,8 @@ RSpec.describe Instructor::LessonsController, type: :controller do
           }
         }
         expect(response).to have_http_status(:unprocessable_entity)
+        new_lesson = Lesson.last
+        expect(new_lesson.title).not_to eq "Incomplete Lesson"
       end
     end
     describe "lessons#update" do
@@ -37,6 +42,8 @@ RSpec.describe Instructor::LessonsController, type: :controller do
           }
         }
         expect(response).to have_http_status(:success)
+        lesson.reload
+        expect(lesson.subtitle).to eq "New subtitle"
       end
     end
   end
@@ -51,6 +58,8 @@ RSpec.describe Instructor::LessonsController, type: :controller do
           }
         }
         expect(response).to redirect_to new_user_session_path
+        new_lesson = Lesson.last
+        expect(new_lesson.title).not_to eq "Unauthenticed Lesson"
       end
     end
     describe "lessons#update" do
@@ -62,6 +71,8 @@ RSpec.describe Instructor::LessonsController, type: :controller do
           }
         }
         expect(response).to redirect_to new_user_session_path
+        lesson.reload
+        expect(lesson.subtitle).not_to eq "Unauthenticed"
       end
     end
   end
@@ -80,6 +91,8 @@ RSpec.describe Instructor::LessonsController, type: :controller do
           }
         }
         expect(response).to have_http_status(:unauthorized)
+        new_lesson = Lesson.last
+        expect(new_lesson.title).not_to eq "Unauthorized Lesson"
       end
     end
     describe "lessons#update" do
@@ -92,6 +105,8 @@ RSpec.describe Instructor::LessonsController, type: :controller do
           }
         }
         expect(response).to have_http_status(:unauthorized)
+        lesson.reload
+        expect(lesson.subtitle).not_to eq "Unauthorized"
       end
     end
   end
